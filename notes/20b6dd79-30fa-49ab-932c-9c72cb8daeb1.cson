@@ -1,0 +1,32 @@
+createdAt: "2019-11-07T15:17:46.005Z"
+updatedAt: "2019-11-23T19:19:36.517Z"
+type: "MARKDOWN_NOTE"
+folder: "3d7280a8c22b713dcd6d"
+title: "C++ Handy Notes"
+tags: [
+  "C++"
+]
+content: '''
+  # C++ Handy Notes
+  
+  ###  Global Variables
+  Global variables are defined within the **file scope**
+  !!! note Note
+  *Global variables* are intitalized as 0 by default, whereas, *local variables* are not.
+  !!!
+  
+  
+  ```c++
+  int main(){
+  std::cout<<"Just Checking";
+  return 0;
+  }
+  
+  ```
+  
+  ### Prmitive Data types
+  
+'''
+linesHighlighted: []
+isStarred: false
+isTrashed: false

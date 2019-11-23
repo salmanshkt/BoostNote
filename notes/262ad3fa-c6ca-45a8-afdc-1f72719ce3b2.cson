@@ -1,0 +1,257 @@
+createdAt: "2019-11-15T17:03:16.815Z"
+updatedAt: "2019-11-17T13:43:53.854Z"
+type: "MARKDOWN_NOTE"
+folder: "3d7280a8c22b713dcd6d"
+title: "SQL Basics"
+tags: []
+content: '''
+  ## SQL Basics
+  
+  ### Data types
+  1. **`INT`** for basic integer
+  2. **`DECIMAL (M,N)`** where M is before and N is the number of digits after the decimal point
+  3. **`VARCHAR (L)`** for string values, length of string can be mentioned by L
+  4. **`DATE`** simple date entry _format_: YYYY-MM-DD
+  5. **`TIMESTAMP`** timestamp entry _format:_ YYYY-MM-DD HH:MM:SS
+  ***
+  ### Creating simple table in the database
+  ```SQL
+  CREATE TABLE student(
+  student_id INT PRIMARY KEY,
+  name VARCHAR(20),
+  major VARCHAR(20)
+  );
+  ```
+  !!! note Note
+  + `CREATE TABLE` Creates a table (DUH!)
+  + Every entry is a `KEY` and its Data type
+  + There is only one `PRIMARY KEY`, and is unique for each entry
+  !!!
+  #### Adding  (columns) into the Table schema
+  ```sql
+  ALTER TABLE student ADD gpa DECIMAL(3,2);
+  ALTER TABLE student DROP gpa;
+  ```
+  #### Entering data into the table
+  ```sql
+  INSERT INTO student VALUES (1,"Salman","Maths",3.33);
+  INSERT INTO student VALUES (4,"Ali","Bio",3.55);
+  ```
+  #### How to enter data with one or more missing values ?
+  ```sql
+  INSERT INTO student(student_id,name) VALUES (3,"Yasir")
+  ```
+  ###### Output of the above table
+  | student_id | name | major |gpa|
+  |:---------|:---------|:---------|:---------|
+  |1|Salman|Maths|3.33|
+  |3|Yasir|Null|Null|
+  |4|Ali|Bio|3.55|
+  
+  #### How to force a value to be not `NULL` or to be `Unique` ?
+  
+  _Use `NOT NULL` and `UNIQUE`_
+  ```SQL
+  CREATE TABLE student(
+  student_id INT PRIMARY KEY,
+  name VARCHAR(20) NOT NULL,
+  major VARCHAR(20) UNIQUE
+  );
+  ```
+  #### How to provide a `default` value for an entry ?
+  
+  ```SQL
+  CREATE TABLE student(
+  student_id INT PRIMARY KEY,
+  name VARCHAR(20),
+  major VARCHAR(20) "undecided"
+  );
+  ```
+  !!! note Note
+  "Undecided" is just an example not a keyword
+  !!!
+  
+  #### How to auto increment a key ?
+  
+   use _`AUTO_INCREMENT`_
+   
+   
+  ```SQL
+  CREATE TABLE student(
+  student_id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(20) NOT NULL,
+  major VARCHAR(20) UNIQUE
+  );
+  ```
+  
+  After using the `AUTO_INCREMENT` keyword, there is no need to provide the `PRIMARY KEY` when entering data into the table. For example
+  
+  ```sql
+  INSERT INTO student(name,major,gpa) VALUES("Salman","Maths",3.33)
+  INSERT INTO student(name,major,gpa) VALUES("Ali","Bio",3.55)
+  ```
+  **The `student_id` key will be generated automatically**
+  
+  | student_id | name | major |gpa|
+  |:---------|:---------|:---------|:---------|
+  |1|Salman|Maths|3.33|
+  |2|Ali|Bio|3.55|
+  
+  #### Update data in the table
+  
+  Let's suppouse we want to change the Major `Maths` to `Mathematics`, we can do this as following:
+  ```sql
+  UPDATE student
+  SET major = 'Mathematics'
+  WHERE major = 'Maths';
+  ```
+  !!! caution Caution
+  There is only single `;` at the end of the third line and all 3 lines are considered as a single `statement`
+  !!!
+  
+  ##### How to update data for a specific key ?
+  
+  ```sql
+  UPDATE student
+  SET major = 'Computer Science'
+  WHERE student_id = 4;
+  ```
+  Above code will update data only where `student_id = 4`. 
+  
+  ##### Update data by using rather complex logical condition
+  
+  ```sql
+  UPDATE student
+  SET major = 'BioChemistry'
+  WHERE major = 'Bio' OR major = 'Chemistry';
+  ```
+  
+  ##### Update multiple fields at once
+  
+  ```sql
+  UPDATE student
+  SET name = 'Tom', major = 'BioChemistry'
+  WHERE student_id = 4;
+  ```
+  In above example, both `name` and `major` will be updated
+  
+  #### Deleting  the data
+  
+  following query will delete all the data from the table `student`
+  ```sql
+  DELETE FROM student
+  ```
+  
+  ##### Deleting specific data
+  ```sql
+  DELETE FROM student
+  WHERE student_id = 4;
+  -- TO select multiple data entries:
+  WHERE name = 'Tom' AND major = 'Maths';
+  ```
+  #### Basic Queries
+  Getting information from the database. `SELECT` is the main keyword in this process. **Used to get specific information from large datasets**
+  
+  ##### To get all the information from the table:
+  ```sql
+  SELECT *
+  FROM student;
+  ```
+  ##### To get specific infromation from the table:
+  ```sql
+  SELECT name
+  FROM student; -- This will get all the names in the student table
+  -- ##############################################################
+  -- We can also select mulitple columns
+  SELECT name, major
+  FROM student;
+  ```
+  We can also get the information sorted in order. The type of sorting depends on what we want e.g., sort by name. Example:
+  
+  ```sql
+  SELECT name, major
+  FROM student
+  ORDER BY name;
+  ```
+  Often there can be identical data entries while sorting. So we can define a sub-rule for sorting. E.g., if both students have the name 'Tom', we can sort this further by the student_id or anything else. Example 
+  
+  
+  ```sql
+  SELECT name, major
+  FROM student
+  ORDER BY name, student_id;
+  ```
+  ##### To get limited number of rows from the table:
+  
+  ```sql
+  SELECT *
+  FROM student
+  LIMIT 2;
+  ```
+  Above code will return only first two rows.
+  
+  !!! note Conditional Operators
+   |Operator|Logic|
+   |:-------|:----|
+   |=|Equal to|
+   |<|Less than|
+   |>|Greater than|
+   |>=|Greater than or Equal to|
+   |<=|Less than or Equal to|
+   |<>|Not equal|
+   |OR|Logical OR|
+   |AND|Logical AND|
+   !!!
+   
+   > **Above examples were simple, further, more complex schema is given**
+   
+   Following is an example of company database. With multiple tables.
+   complete code can be found `here`: [Creating Company Database \\| SQL | Mike Dane](https://www.mikedane.com/databases/sql/creating-company-database) 
+   
+   ![company-database.png](:storage\\262ad3fa-c6ca-45a8-afdc-1f72719ce3b2\\e6856c27.png)
+   
+   > **Foreign Key** : A key that links data from one table to another. 
+   
+   #### Code walkthrough
+   
+   ##### Creating  all tables
+   ###### 1. Employee Table
+   ```sql
+   CREATE TABLE employee (
+    emp_id INT PRIMARY KEY,
+    first_name VARCHAR(40),
+    last_name VARCHAR(40),
+    birth_day DATE,
+    sex VARCHAR(1),
+    salary INT,
+    super_id INT,
+    branch_id INT
+  );
+   ```
+   
+   !!! caution Declaring the `Foreign Key`
+   The `Foreign Key` can only be declared when the table using that foreign key already exists. E.g.,  In the Emlpoyee table, we can not declare `branch_id` as a foreign key before actually creating the `Branch` table.
+   !!!
+   
+   ###### 2. Branch table
+   
+   The branch table contains `mgr_id` which is a foreign key linking it to the `emp_id` from the Employee table. We can declare a foreign key as: 
+   
+   ```sql
+   FOREIGN KEY(mgr_id) REFERENCES employee(emp_id) ON DELETE SET NULL
+   ```
+  The complete table code is : 
+  
+  ```sql
+   CREATE TABLE branch (
+    branch_id INT PRIMARY KEY,
+    branch_name VARCHAR(40),
+    mgr_id INT,
+    mgr_start_date DATE,
+    FOREIGN KEY(mgr_id) REFERENCES employee(emp_id) ON DELETE SET NULL
+  );
+   ```
+'''
+linesHighlighted: []
+isStarred: false
+isTrashed: false
